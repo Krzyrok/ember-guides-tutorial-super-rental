@@ -1,7 +1,19 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'ember-guides-tutorial-super-rental/tests/helpers/module-for-acceptance';
+import Ember from 'ember';
 
-moduleForAcceptance('Acceptance | list rentals');
+const MapsServiceStub = Ember.Service.extend({
+  getMapElement(location) {
+    return document.createElement('div');
+  }
+});
+
+moduleForAcceptance('Acceptance | list rentals', {
+  beforeEach() {
+    this.application.register('service:mapsStub', MapsServiceStub);
+    this.application.inject('component:location-map', 'maps', 'service:mapsStub');
+  }
+});
 
 test('should show rentals as the home page', (assert) => {
   visit('/');
