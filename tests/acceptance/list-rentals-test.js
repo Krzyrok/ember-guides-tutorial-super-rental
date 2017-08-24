@@ -3,7 +3,7 @@ import moduleForAcceptance from 'ember-guides-tutorial-super-rental/tests/helper
 import Ember from 'ember';
 
 const MapsServiceStub = Ember.Service.extend({
-  getMapElement(location) {
+  getMapElement() {
     return document.createElement('div');
   }
 });
@@ -48,4 +48,11 @@ test('should filter the list of rentals by city.', (assert) => {
 });
 
 test('should show details for a selected rental', (assert) => {
+  visit('/');
+  click('a:contains("Grand Old Mansion")');
+  andThen(() => {
+    assert.equal(currentURL(), '/rentals/grand-old-mansion', 'should navigate to show route');
+    assert.equal(find('.show-listing h2').text(), 'Grand Old Mansion', 'should list rental title');
+    assert.equal(find('.description').length, 1, 'should list a description of the property');
+  });
 });
